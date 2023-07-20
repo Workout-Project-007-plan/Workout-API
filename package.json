@@ -1,0 +1,8 @@
+{
+  "name": "Workout-API",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:Workout-Project-007-plan/Workout-API.git",
+  "author": "<dreicleal@hotmail.com>",
+  "license": "MIT"
+}
