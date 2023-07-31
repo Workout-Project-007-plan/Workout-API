@@ -24,9 +24,11 @@
     "dotenv": "^16.3.1",
     "pg": "^8.11.1",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.3.17"
+    "typeorm": "^0.3.17",
+    "zod": "^3.21.4"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "dev": "tsnd --cls --rs --ignore-watch node_modules src/app.ts"
   }
 }
