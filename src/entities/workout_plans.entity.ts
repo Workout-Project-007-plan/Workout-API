@@ -4,7 +4,10 @@ import {
   Column,
   CreateDateColumn,
   BeforeInsert,
+  ManyToOne,
 } from "typeorm";
+import { Users } from "./users.entity";
+import { Trains } from "./trains.entity";
 
 @Entity("workout_plans")
 export class Workout_plans {
@@ -17,7 +20,7 @@ export class Workout_plans {
   @CreateDateColumn({ type: "timestamp" })
   created_at: Date;
 
-  @Column({ type: "timestamp", nullable: true })
+  @Column({ nullable: true })
   end_date: Date;
 
   @BeforeInsert()
@@ -27,4 +30,11 @@ export class Workout_plans {
     endDate.setDate(endDate.getDate() + 30);
     this.end_date = endDate;
   }
+  @ManyToOne(() => Users, (user) => user.workoutPlans, { onDelete: "CASCADE" })
+  user: Users;
+
+  @ManyToOne(() => Trains, (train) => train.workoutPlans, {
+    onDelete: "CASCADE",
+  })
+  trains: Trains;
 }

@@ -7,9 +7,10 @@ import {
   DeleteDateColumn,
   BeforeUpdate,
   BeforeInsert,
+  OneToMany,
 } from "typeorm";
 import { getRounds, hashSync } from "bcryptjs";
-import { boolean } from "zod";
+import { Workout_plans } from "./workout_plans.entity";
 @Entity("users")
 export class Users {
   @PrimaryGeneratedColumn("uuid")
@@ -48,7 +49,7 @@ export class Users {
   @UpdateDateColumn({ type: "timestamp" })
   updated_at: Date;
 
-  @DeleteDateColumn({ type: "timestamp" })
+  @DeleteDateColumn({ nullable: true })
   deleted_at: Date;
 
   @BeforeUpdate()
@@ -61,8 +62,11 @@ export class Users {
   }
 
   @Column({ unique: true, nullable: true })
-  passwordResetToken: string;
+  password_reset_token: string;
 
   @Column({ type: "timestamp", nullable: true })
-  psswordResetedAt: Date;
+  pssword_reseted_at: Date;
+
+  @OneToMany(() => Workout_plans, (workoutPlans) => workoutPlans.user)
+  workoutPlans: Workout_plans[]
 }
