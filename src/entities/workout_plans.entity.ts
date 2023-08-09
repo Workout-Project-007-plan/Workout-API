@@ -6,11 +6,11 @@ import {
   BeforeInsert,
   ManyToOne,
 } from "typeorm";
-import { Users } from "./users.entity";
-import { Trains } from "./trains.entity";
+import { User } from "./users.entity";
+import { Train } from "./trains.entity";
 
 @Entity("workout_plans")
-export class Workout_plans {
+export class Workout_plan {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
@@ -30,11 +30,11 @@ export class Workout_plans {
     endDate.setDate(endDate.getDate() + 30);
     this.end_date = endDate;
   }
-  @ManyToOne(() => Users, (user) => user.workoutPlans, { onDelete: "CASCADE" })
-  user: Users;
+  @ManyToOne(() => User, (user) => user.workoutPlans, { onDelete: "CASCADE" })
+  user: User;
 
-  @ManyToOne(() => Trains, (train) => train.workoutPlans, {
+  @ManyToOne(() => Train, (train) => train.workoutPlans, {
     onDelete: "CASCADE",
   })
-  trains: Trains;
+  trains: Train;
 }
