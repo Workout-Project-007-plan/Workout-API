@@ -1,9 +1,10 @@
+import "dotenv/config";
 import { app } from "./app";
-import { AppDataSource } from "./data-source";
+import  AppDataSource  from "./data-source";
 
 const PORT = 3000;
 AppDataSource.initialize()
-  .then(() => {
+  .then((): void => {
     console.log("Database Connected!");
     app.listen(PORT, () => {
       console.log(`Server is running on port: ${PORT}.`);
