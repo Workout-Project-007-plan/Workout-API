@@ -10,9 +10,9 @@ import {
   OneToMany,
 } from "typeorm";
 import { getRounds, hashSync } from "bcryptjs";
-import { Workout_plans } from "./workout_plans.entity";
+import { Workout_plan } from "./workout_plans.entity";
 @Entity("users")
-export class Users {
+export class User {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
@@ -25,16 +25,16 @@ export class Users {
   @Column()
   password: string;
 
-  @Column({ length: 3 })
+  @Column()
   height: number;
 
-  @Column({ length: 3 })
+  @Column()
   age: number;
 
-  @Column({ length: 3 })
+  @Column()
   weight: number;
 
-  @Column({ length: 3 })
+  @Column()
   weight_goal: number;
 
   @Column({ default: true })
@@ -50,7 +50,7 @@ export class Users {
   updated_at: Date;
 
   @DeleteDateColumn({ nullable: true })
-  deleted_at: Date;
+  deleted_at: Date | null;
 
   @BeforeUpdate()
   @BeforeInsert()
@@ -67,6 +67,6 @@ export class Users {
   @Column({ type: "timestamp", nullable: true })
   pssword_reseted_at: Date;
 
-  @OneToMany(() => Workout_plans, (workoutPlans) => workoutPlans.user)
-  workoutPlans: Workout_plans[]
+  @OneToMany(() => Workout_plan, (workoutPlan) => workoutPlan.user)
+  workoutPlans: Workout_plan[]
 }

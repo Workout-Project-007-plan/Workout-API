@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { Workout_plans } from "./workout_plans.entity";
+import { Workout_plan } from "./workout_plans.entity";
 
 @Entity("trains")
-export class Trains {
+export class Train {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
@@ -12,6 +12,6 @@ export class Trains {
   @Column()
   status: boolean;
 
-  @OneToMany(() => Workout_plans, (workoutPlans) => workoutPlans.trains)
-  workoutPlans: Workout_plans[]
+  @OneToMany(() => Workout_plan, (workoutPlan) => workoutPlan.trains)
+  workoutPlans: Workout_plan[]
 }
