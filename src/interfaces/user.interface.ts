@@ -1,4 +1,6 @@
 import { z } from "zod";
-import { user } from "../schemas";
+import { user, userSignUp } from "../schemas";
 
-export type User = z.infer<typeof user>
+export type TUserCreated = z.infer<typeof user>
+
+export type TUserSignUp = z.infer<typeof userSignUp>

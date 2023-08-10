@@ -9,8 +9,8 @@ export const user = z.object({
   name: z.string().min(3),
   height: z.number().max(4),
   age: z.number().max(3),
-  weigth: z.number().max(5),
-  weigth_goal: z.number().max(5),
+  weight: z.number().max(5),
+  weight_goal: z.number().max(5),
   created_at: z.date(),
   updated_at: z.date(),
   deleted_at: z.date(),
@@ -24,10 +24,11 @@ export const userSignUp = user.omit({
   created_at: true,
   updated_at: true,
   deleted_at: true,
+  is_active: true,
   password_reset_token: true,
   password_reseted_at: true,
 });
 
 export const usersGet = user.array();
 
-export const userUpdate = userSignUp.partial()
+export const userUpdate = userSignUp.partial();
