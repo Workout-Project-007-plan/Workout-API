@@ -18,6 +18,15 @@ export const user = z.object({
   password_reseted_at: z.date(),
 });
 
+export const userAdmin = user.omit({
+    id: true,
+    created_at: true,
+    updated_at: true,
+    deleted_at: true,
+    is_active: true,
+    password_reset_token: true,
+    password_reseted_at: true,
+})
 export const userSignUp = user.omit({
   id: true,
   admin: true,
