@@ -1,4 +1,9 @@
-import { TUserAdmin, TUserSignUp } from "../../interfaces/user.interface";
+import { download } from "express/lib/response";
+import {
+  TUserAdmin,
+  TUserLogin,
+  TUserSignUp,
+} from "../../interfaces/user.interface";
 
 export const mockUserSignUpData: TUserSignUp = {
   name: "John Doe",
@@ -10,6 +15,26 @@ export const mockUserSignUpData: TUserSignUp = {
   weight_goal: 80,
 };
 
+export const mockUserAdminSignUpData: TUserAdmin = {
+  name: "John Doe",
+  email: "doe.admin@mail.com",
+  password: "123456",
+  height: 178,
+  age: 28,
+  weight: 70,
+  weight_goal: 80,
+  admin: true,
+};
+
+export const mockUserLoginData: TUserLogin = {
+  email: "doe.john@mail.com",
+  password: "123456",
+};
+export const mockAdminLoginData: TUserLogin = {
+  email: "doe.admin@mail.com",
+  password: "123456",
+};
+
 export const mockWrongUserSignUpData = {
   name: "John Doe",
   email: "doe.john@mail.com",
@@ -17,15 +42,4 @@ export const mockWrongUserSignUpData = {
 export const mockWrongUserMailData = {
   name: "John Doe",
   email: "doe.johnmail",
-};
-
-export const mockUserAdminSignUpData: TUserAdmin = {
-  name: "John Doe",
-  email: "doe.john@mail.com",
-  password: "123456",
-  height: 178,
-  age: 28,
-  weight: 70,
-  weight_goal: 80,
-  admin: true,
 };
