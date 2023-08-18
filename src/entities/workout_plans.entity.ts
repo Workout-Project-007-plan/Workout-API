@@ -17,7 +17,7 @@ export class Workout_plan {
   @Column()
   plan_type: string;
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn()
   created_at: Date;
 
   @Column({ nullable: true })

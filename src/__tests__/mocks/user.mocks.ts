@@ -3,6 +3,7 @@ import {
   TUserAdmin,
   TUserLogin,
   TUserSignUp,
+  TUserUpdate,
 } from "../../interfaces/user.interface";
 
 export const mockUserSignUpData: TUserSignUp = {
@@ -13,6 +14,16 @@ export const mockUserSignUpData: TUserSignUp = {
   age: 28,
   weight: 70,
   weight_goal: 80,
+};
+
+export const mockUserUpdateData: TUserUpdate = {
+  name: "New John",
+  email: "new.john@mail.com",
+  password: "654321",
+  height: 175,
+  age: 30,
+  weight: 74,
+  weight_goal: 82,
 };
 
 export const mockUserAdminSignUpData: TUserAdmin = {
