@@ -111,7 +111,7 @@ describe("/users", () => {
     expect(response.status).toBe(401);
   });
 
-  test("GET /users/:id - Should be able to list an user by Id", async () => {
+  test("GET /users/:id - Should be able to list an user by ID.", async () => {
     const users = await request(app)
       .get("/users")
       .set("Authorization", await adminToken());
@@ -130,7 +130,7 @@ describe("/users", () => {
     expect(response.status).toBe(200);
   });
 
-  test("GET /users/:id - Should not be able to list an user by ID WITHOUT authorization", async () => {
+  test("GET /users/:id - Should not be able to list an user by ID WITHOUT authorization.", async () => {
     const users = await request(app)
       .get("/users")
       .set("Authorization", await adminToken());
@@ -147,7 +147,7 @@ describe("/users", () => {
     expect(response.status).toBe(200);
   });
 
-  test("GET users/:id - Should not be able to list an user without a valid id", async () => {
+  test("GET users/:id - Should not be able to list an user without a valid id.", async () => {
     const response = await request(app)
       .get(`/users/b855d86b-d4c9-41cd-ab98-d7fa734c6ce4`)
       .set("Authorization", await adminToken());
@@ -156,7 +156,7 @@ describe("/users", () => {
     expect(response.status).toBe(404);
   });
 
-  test("GET /users/profile - Should be able to list your own profile", async () => {
+  test("GET /users/profile - Should be able to list your own profile.", async () => {
     const response = await request(app)
       .get(`/users/profile`)
       .set("Authorization", await adminToken());
@@ -171,9 +171,8 @@ describe("/users", () => {
     expect(response.body).toHaveProperty("updated_at");
     expect(response.status).toBe(200);
   });
-  //-------------------------------------------------------------------//----------------------------
 
-  test("PATCH /users - Should not be able to update without authentication", async () => {
+  test("PATCH /users - Should not be able to update without authentication.", async () => {
     const userToUpdate = await request(app)
       .get("/users")
       .set("Authorization", await adminToken());
@@ -186,7 +185,7 @@ describe("/users", () => {
     expect(response.status).toBe(401);
   });
 
-  test("PATCH /users - Should not be able to update with invalid id", async () => {
+  test("PATCH /users - Should not be able to update with invalid id.", async () => {
     const newData = { name: "Test", email: "test@mail.com" };
 
     const response = await request(app)
@@ -198,7 +197,7 @@ describe("/users", () => {
     expect(response.status).toBe(400);
   });
 
-  test("PATCH /users - Should not be able to update another user without admin permission", async () => {
+  test("PATCH /users - Should not be able to update another user without admin permission.", async () => {
     const newData = { name: "Test", email: "test@mail.com" };
 
     const userToUpdateRequest = await request(app)
@@ -213,7 +212,7 @@ describe("/users", () => {
     expect(response.status).toBe(401);
   });
 
-  test("PATCH /users - Should not be able to update Adm credential", async () => {
+  test("PATCH /users - Should not be able to update Adm credential.", async () => {
     const newAdmValue = { isAdm: true };
 
     const userToUpdate = await request(app)
@@ -229,7 +228,7 @@ describe("/users", () => {
     expect(response.status).toBe(401);
   });
 
-  test("PATCH /users - Should be able to update user", async () => {
+  test("PATCH /users - Should be able to update user.", async () => {
     const userToUpdate = await request(app)
       .post("/users")
       .send(mockUserLoginData);
@@ -249,5 +248,77 @@ describe("/users", () => {
     );
     expect(updateResponse.status).toBe(200);
     expect(updateResponse.body).toHaveProperty("message");
+  });
+
+  test("DELETE /users/:id - Should NOT be able to inactive someone else account without admin permissions.", async () => {
+    const userToBeDeleted = await request(app)
+      .get("/users")
+      .set("Authorization", await adminToken());
+    const response = await request(app)
+      .delete(`/users/${userToBeDeleted.body.users[0].id}`)
+      .set("Authorization", await userToken());
+
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
+  });
+
+  test("DELETE /users/:id - Should NOT be able to inactive an account without a valid ID.", async () => {
+    const response = await request(app)
+      .delete("/users/165981909")
+      .set("Authorization", await adminToken());
+
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
+  });
+
+  test("DELETE /users/profile - Should be able to inactive your own account.", async () => {
+    const userToBeDeleted = await request(app)
+      .get(`/users/profile`)
+      .set("Authorization", await userToken());
+
+    const response = await request(app)
+      .delete(`/users/${userToBeDeleted.body.id}`)
+      .set("Authorization", await userToken());
+
+    expect(response.status).toBe(204);
+  });
+
+  test("DELETE /users/profile - Should NOT be able to inactive an account that already have been inactivated.", async () => {
+    const userToBeDeleted = await request(app)
+      .get(`/users/profile`)
+      .set("Authorization", await userToken());
+
+    const response = await request(app)
+      .delete(`/users/${userToBeDeleted.body.id}`)
+      .set("Authorization", await userToken());
+
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
+  });
+
+  test("PATCH /users/:id - Should be able to reactive your own account.", async () => {
+    const userToReactive = await request(app)
+      .patch(`/users/:id`)
+      .set("Authorization", await userToken());
+
+    const response = await request(app)
+      .delete(`/users/${userToReactive.body.id}/reactivation`)
+      .set("Authorization", await userToken());
+
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(201);
+  });
+
+  test("PATCH /users/:id - Should NOT be able to reactive an account already activated.", async () => {
+    const userToReactive = await request(app)
+      .patch(`/users/:id`)
+      .set("Authorization", await userToken());
+
+    const response = await request(app)
+      .delete(`/users/${userToReactive.body.id}/reactivation`)
+      .set("Authorization", await userToken());
+
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
   });
 });
