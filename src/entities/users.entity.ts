@@ -43,10 +43,10 @@ export class User {
   @Column({ default: false })
   is_adm: boolean;
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn()
   created_at: Date;
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn()
   updated_at: Date;
 
   @DeleteDateColumn({ nullable: true })
@@ -64,9 +64,9 @@ export class User {
   @Column({ unique: true, nullable: true })
   password_reset_token: string;
 
-  @Column({ type: "timestamp", nullable: true })
+  @Column({ nullable: true })
   pssword_reseted_at: Date;
 
   @OneToMany(() => Workout_plan, (workoutPlan) => workoutPlan.user)
-  workoutPlans: Workout_plan[]
+  workoutPlans: Workout_plan[];
 }
