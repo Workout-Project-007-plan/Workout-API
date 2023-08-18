@@ -4,13 +4,10 @@ import { DataSource } from "typeorm";
 import {
   mockUserAdminSignUpData,
   mockUserLoginData,
-  mockUserSignUpData,
-  mockUserUpdateData,
   mockWrongUserMailData,
-  mockWrongUserSignUpData,
 } from "../mocks/user.mocks";
 import AppDataSource from "../../../src/data-source";
-import { adminToken, userToken } from "../mocks/token.mocks";
+import { adminToken } from "../mocks/token.mocks";
 
 describe("/login", () => {
   let connection: DataSource;
