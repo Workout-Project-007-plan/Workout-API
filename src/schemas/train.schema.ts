@@ -1,11 +1,15 @@
 import { z } from "zod";
 import { exercise } from "./exercise.schema";
 
-export const train = z.object({
+export const trainResponse = z.object({
   id: z.string().uuid(),
   name: z.string(),
-  status: z.string(),
-  exercise: exercise.array(),
+  status: z.boolean(),
+  exercises: exercise.array(),
 });
 
-export const trainsSerie = train.array();
+export const trainCreate = trainResponse.omit({
+  id: true,
+});
+
+export const trainsSerie = trainResponse.array();
