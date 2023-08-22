@@ -7,6 +7,7 @@ export const user = z.object({
   admin: z.boolean().default(() => false),
   is_active: z.boolean().default(() => true),
   name: z.string().min(3),
+  gender: z.string().min(3),
   height: z.number().max(4),
   age: z.number().max(3),
   weight: z.number().max(5),

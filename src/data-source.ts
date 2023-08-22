@@ -4,6 +4,8 @@ import { User } from "./entities/users.entity";
 import { Train } from "./entities/trains.entity";
 import { Workout_plan } from "./entities/workout_plans.entity";
 import { InitialMigration1691602936015 } from "./migrations/1691602936015-InitialMigration";
+import { IncludeExercisesRelation1692743601397 } from "./migrations/1692743601397-includeExercisesRelation";
+import { Exercise } from "./entities/exercises.entity";
 
 const setDataSourceConfig = (): DataSourceOptions => {
   const dbURL: string | undefined = process.env.DATABASE_URL;
@@ -16,7 +18,7 @@ const setDataSourceConfig = (): DataSourceOptions => {
       type: "sqlite",
       database: ":memory:",
       synchronize: true,
-      entities: [User, Train, Workout_plan],
+      entities: [User, Train, Workout_plan, Exercise],
     };
   }
 
@@ -25,8 +27,11 @@ const setDataSourceConfig = (): DataSourceOptions => {
     url: dbURL,
     synchronize: false,
     logging: true,
-    entities: [User, Train, Workout_plan],
-    migrations: [InitialMigration1691602936015],
+    entities: [User, Train, Workout_plan, Exercise],
+    migrations: [
+      InitialMigration1691602936015,
+      IncludeExercisesRelation1692743601397,
+    ],
   };
 };
 

@@ -26,6 +26,9 @@ export class User {
   password: string;
 
   @Column()
+  gender: string;
+
+  @Column()
   height: number;
 
   @Column()
