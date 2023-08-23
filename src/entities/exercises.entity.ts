@@ -3,14 +3,17 @@ import { Train } from "./trains.entity";
 
 @Entity("Exercises")
 export class Exercise {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: bigint;
 
   @Column()
   name: string;
 
   @Column()
   reps: number;
+
+  @Column()
+  series: number;
 
   @Column()
   effort: number;
