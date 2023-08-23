@@ -1,4 +1,4 @@
-import { download } from "express/lib/response";
+
 import {
   TUserAdmin,
   TUserLogin,
@@ -10,6 +10,7 @@ export const mockUserSignUpData: TUserSignUp = {
   name: "John Doe",
   email: "doe.john@mail.com",
   password: "123456",
+  gender: "male",
   height: 178,
   age: 28,
   weight: 70,
@@ -30,6 +31,7 @@ export const mockUserAdminSignUpData: TUserAdmin = {
   name: "John Doe",
   email: "doe.admin@mail.com",
   password: "123456",
+  gender: "male",
   height: 178,
   age: 28,
   weight: 70,
