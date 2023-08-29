@@ -3,7 +3,7 @@ import { app } from "../../../src/app";
 import { DataSource } from "typeorm";
 import { mockUserAdminSignUpData } from "../mocks/user.mocks";
 import AppDataSource from "../../../src/data-source";
-import { mockTrainACreateData, mockTrainAUpdated } from "../mocks/train.mocks";
+import { mockExcessiveTrainData, mockInvalidTrain, mockTrainACreateData, mockTrainAUpdated } from "../mocks/train.mocks";
 import { userToken } from "../mocks/token.mocks";
 
 describe("/trains", () => {
@@ -43,6 +43,26 @@ describe("/trains", () => {
       mockTrainACreateData.exercises[0]
     );
     expect(response.status).toBe(201);
+  });
+  
+  test("POST /trains - Should NOT be able to create a train with less than 3 exercises.", async () => {
+    const response = await request(app)
+      .post("/trains")
+      .send(mockInvalidTrain)
+      .set("Authorization", await userToken());
+
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
+  });
+
+  test("POST /trains - Should NOT be able to create a train with more than 11 exercises.", async () => {
+    const response = await request(app)
+      .post("/trains")
+      .send(mockExcessiveTrainData)
+      .set("Authorization", await userToken());
+
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
   });
 
   test("PATCH /trains - Should be able to edit a train.", async () => {
