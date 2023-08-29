@@ -197,7 +197,7 @@ describe("/users", () => {
     expect(response.status).toBe(400);
   });
 
-  test("PATCH /users - Should not be able to update another user without admin permission.", async () => {
+  test("PATCH /users - Should NOT be able to update another user without admin permission.", async () => {
     const newData = { name: "Test", email: "test@mail.com" };
 
     const userToUpdateRequest = await request(app)
@@ -212,7 +212,7 @@ describe("/users", () => {
     expect(response.status).toBe(401);
   });
 
-  test("PATCH /users - Should not be able to update Adm credential.", async () => {
+  test("PATCH /users - Should NOT be able to update Adm credential.", async () => {
     const newAdmValue = { isAdm: true };
 
     const userToUpdate = await request(app)

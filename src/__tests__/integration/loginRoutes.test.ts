@@ -40,7 +40,7 @@ describe("/login", () => {
     expect(response.statusCode).toBe(401);
   });
 
-  test("POST /login - Should NOT be able to login if field is empty or wrong.", async () => {
+  test("POST /login - Should NOT be able to login if one or more field is empty or wrong.", async () => {
     const response = await request(app)
       .post("/login")
       .send({ email: "", password: "" });

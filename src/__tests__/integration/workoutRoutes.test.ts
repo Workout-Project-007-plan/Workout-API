@@ -4,7 +4,7 @@ import { DataSource } from "typeorm";
 import { mockUserAdminSignUpData } from "../mocks/user.mocks";
 import AppDataSource from "../../../src/data-source";
 import { userToken } from "../mocks/token.mocks";
-import { mockedPlan, mockedUpdatedPlan } from "../mocks/train.mocks";
+import { mockedExcessive, mockedLackPlan, mockedPlan, mockedUpdatedPlan } from "../mocks/train.mocks";
 
 describe("/trains", () => {
   let connection: DataSource;
@@ -25,6 +25,27 @@ describe("/trains", () => {
 
   test("POST /plans - Should NOT be able to create a plan without authentication.", async () => {
     const response = await request(app).post("/plans").send(mockedPlan);
+
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
+  });
+
+  test("POST /plans - Should NOT be able to create a plan without trains.", async () => {
+    const response = await request(app).post("/plans").send().set("Authorization", await userToken());
+
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
+  });
+
+  test("POST /plans - Should NOT be able to create a plan with less than 2 trains.", async () => {
+    const response = await request(app).post("/plans").send(mockedLackPlan).set("Authorization", await userToken());
+
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
+  });
+
+  test("POST /plans - Should NOT be able to create a plan with more than 7 trains.", async () => {
+    const response = await request(app).post("/plans").send(mockedExcessive).set("Authorization", await userToken());
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(401);
