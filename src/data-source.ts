@@ -5,6 +5,7 @@ import { Train } from "./entities/trains.entity";
 import { Workout_plan } from "./entities/workout_plans.entity";
 import { InitialMigration1691602936015 } from "./migrations/1691602936015-InitialMigration";
 import { IncludeExercisesRelation1692743601397 } from "./migrations/1692743601397-includeExercisesRelation";
+import { ExercisesUpdate1692812631314 } from "./migrations/1692812631314-exercisesUpdate";
 import { Exercise } from "./entities/exercises.entity";
 
 const setDataSourceConfig = (): DataSourceOptions => {
@@ -31,6 +32,7 @@ const setDataSourceConfig = (): DataSourceOptions => {
     migrations: [
       InitialMigration1691602936015,
       IncludeExercisesRelation1692743601397,
+      ExercisesUpdate1692812631314,
     ],
   };
 };
