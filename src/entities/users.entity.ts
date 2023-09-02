@@ -46,14 +46,14 @@ export class User {
   @Column({ default: false })
   is_adm: boolean;
 
-  @CreateDateColumn()
-  created_at: Date;
+  @CreateDateColumn({type:"date"})
+  created_at: string;
 
-  @UpdateDateColumn()
-  updated_at: Date;
+  @UpdateDateColumn({type:"date"})
+  updated_at: string;
 
-  @DeleteDateColumn({ nullable: true })
-  deleted_at: Date | null;
+  @DeleteDateColumn({ type:"date" })
+  deleted_at: string | null;
 
   @BeforeUpdate()
   @BeforeInsert()
@@ -68,7 +68,7 @@ export class User {
   password_reset_token: string;
 
   @Column({ nullable: true })
-  pssword_reseted_at: Date;
+  password_reseted_at: string;
 
   @OneToMany(() => Workout_plan, (workoutPlan) => workoutPlan.user)
   workoutPlans: Workout_plan[];
