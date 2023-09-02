@@ -1,14 +1,13 @@
 import dataSource from "../data-source";
 import { User } from "../entities/users.entity";
 import AppError from "../errors";
-import { TUserCreated, TUserSignUp } from "../interfaces/user.interface";
-import { userSchema } from "../schemas/user.schema";
+import { TUserCreated, TUserReturnedCreated, TUserSignUp } from "../interfaces/user.interface";
+import { userReturnedSchema, userSchema } from "../schemas/user.schema";
 
 export const createUserService = async (
   userData: TUserSignUp
-): Promise<TUserCreated> => {
+): Promise<TUserReturnedCreated> => {
   const userRepository = dataSource.getRepository(User);
-
   const userExist = await userRepository.findOneBy({ email: userData.email });
 
   if (userExist) {
@@ -20,7 +19,7 @@ export const createUserService = async (
   const newUser = userRepository.create(userData);
   await userRepository.save(newUser);
 
-  const userResponse = userSchema.parse(newUser);
+  const userResponse = userReturnedSchema.parse(newUser);
 
   return userResponse
 };

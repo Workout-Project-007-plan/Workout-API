@@ -7,16 +7,16 @@ export const userSchema = z.object({
   admin: z.boolean().default(() => false),
   is_active: z.boolean().default(() => true),
   name: z.string().min(3),
-  gender: z.string().min(3),
+  gender: z.string().min(3).max(10),
   height: z.number().max(4),
-  age: z.number().max(3),
-  weight: z.number().max(5),
-  weight_goal: z.number().max(5),
-  created_at: z.date(),
-  updated_at: z.date(),
-  deleted_at: z.date(),
-  password_reset_token: z.string(),
-  password_reseted_at: z.date(),
+  age: z.number().max(120),
+  weight: z.number().max(250),
+  weight_goal: z.number().max(150),
+  created_at: z.string().or(z.date()),
+  updated_at: z.string().or(z.date()),
+  deleted_at: z.string().or(z.date()).nullable(),
+  password_reset_token: z.string().nullable(),
+  password_reseted_at: z.string().nullable(),
 });
 
 export const userLogin = z.object({
@@ -43,6 +43,8 @@ export const userSignUp = userSchema.omit({
   password_reset_token: true,
   password_reseted_at: true,
 });
+
+export const userReturnedSchema = userSchema.omit({ password: true });
 
 export const usersGet = userSchema.array();
 
