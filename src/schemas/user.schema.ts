@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const user = z.object({
+export const userSchema = z.object({
   id: z.string().uuid(),
   email: z.string().email(),
   password: z.string().min(6),
@@ -24,7 +24,7 @@ export const userLogin = z.object({
   password: z.string().min(6),
 });
 
-export const userAdmin = user.omit({
+export const userAdmin = userSchema.omit({
   id: true,
   created_at: true,
   updated_at: true,
@@ -33,7 +33,7 @@ export const userAdmin = user.omit({
   password_reset_token: true,
   password_reseted_at: true,
 });
-export const userSignUp = user.omit({
+export const userSignUp = userSchema.omit({
   id: true,
   admin: true,
   created_at: true,
@@ -44,6 +44,6 @@ export const userSignUp = user.omit({
   password_reseted_at: true,
 });
 
-export const usersGet = user.array();
+export const usersGet = userSchema.array();
 
 export const userUpdate = userSignUp.partial();
