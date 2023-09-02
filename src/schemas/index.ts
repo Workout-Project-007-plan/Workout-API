@@ -1,3 +1,3 @@
-import {user, userSignUp} from "./user.schema"
+import {userSchema, userSignUp} from "./user.schema"
 
-export {user, userSignUp} 
+export {userSchema, userSignUp} 
