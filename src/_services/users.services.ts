@@ -5,8 +5,9 @@ import {
   TGetUsers,
   TUserReturnedCreated,
   TUserSignUp,
+  TUserUpdate,
 } from "../interfaces/user.interface";
-import { userReturnedSchema, usersGet } from "../schemas/user.schema";
+import { userReturnedSchema, userUpdate, usersGet } from "../schemas/user.schema";
 
 export const createUserService = async (
   userData: TUserSignUp
@@ -54,6 +55,29 @@ export const retrieveUsersService = async (): Promise<TGetUsers> => {
   }
 
   const usersResponse = usersGet.parse(findUsers);
+
+  return usersResponse;
+};
+export const updateUserService = async (
+  userId: string,
+  newData: TUserUpdate
+) => {
+  const userRepository = dataSource.getRepository(User);
+
+  const foundUser = await userRepository.findOneBy({ id: userId });
+
+  if (!foundUser) {
+    throw new AppError("User not found, try again with new information", 404);
+  }
+
+  const nUserData = userRepository.create({
+    ...foundUser,
+    ...newData,
+  });
+
+  await userRepository.save(nUserData);
+
+  const usersResponse = userUpdate.parse(nUserData);
 
   return usersResponse;
 };

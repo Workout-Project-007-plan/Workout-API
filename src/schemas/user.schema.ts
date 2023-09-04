@@ -51,4 +51,4 @@ export const userReturnedSchema = userSchema.extend({
 
 export const usersGet = userReturnedSchema.array();
 
-export const userUpdate = userSignUp.partial();
+export const userUpdate = userReturnedSchema.partial();
