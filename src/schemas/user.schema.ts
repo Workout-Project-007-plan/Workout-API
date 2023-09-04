@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { trainsSerie } from "./train.schema";
 
 export const userSchema = z.object({
   id: z.string().uuid(),
@@ -44,7 +45,9 @@ export const userSignUp = userSchema.omit({
   password_reseted_at: true,
 });
 
-export const userReturnedSchema = userSchema.omit({ password: true });
+export const userReturnedSchema = userSchema.extend({
+  // incluir treinos
+}).omit({ password: true });
 
 export const usersGet = userSchema.array();
 

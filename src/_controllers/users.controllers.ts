@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import { TUserSignUp } from "../interfaces/user.interface";
-import { createUserService } from "../_services/users.services";
+import {
+  createUserService,
+  retrieveUserService,
+} from "../_services/users.services";
 
 export const createUserController = async (
   req: Request,
@@ -9,4 +12,12 @@ export const createUserController = async (
   const userData: TUserSignUp = req.body;
   const newUser = await createUserService(userData);
   return res.status(201).json(newUser);
+};
+export const retrieveUserController = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const userId: string = req.params.id;
+  const foundUser = await retrieveUserService(userId);
+  return res.status(201).json(foundUser);
 };

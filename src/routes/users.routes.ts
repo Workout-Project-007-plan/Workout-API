@@ -1,11 +1,11 @@
 import {Router} from "express"
-import { createUserController } from "../_controllers/users.controllers"
+import { createUserController, retrieveUserController } from "../_controllers/users.controllers"
 
 const userRouter: Router = Router()
 
 userRouter.post("", createUserController)
+userRouter.get("/:id", retrieveUserController)
 userRouter.get("", )
-userRouter.get("/:id", )
 userRouter.patch("/:id", )
 userRouter.delete("/:id", )
 

@@ -1,8 +1,11 @@
 import dataSource from "../data-source";
 import { User } from "../entities/users.entity";
 import AppError from "../errors";
-import { TUserCreated, TUserReturnedCreated, TUserSignUp } from "../interfaces/user.interface";
-import { userReturnedSchema, userSchema } from "../schemas/user.schema";
+import {
+  TUserReturnedCreated,
+  TUserSignUp,
+} from "../interfaces/user.interface";
+import { userReturnedSchema } from "../schemas/user.schema";
 
 export const createUserService = async (
   userData: TUserSignUp
@@ -21,5 +24,22 @@ export const createUserService = async (
 
   const userResponse = userReturnedSchema.parse(newUser);
 
-  return userResponse
+  return userResponse;
+};
+
+export const retrieveUserService = async (
+  userId: string
+): Promise<TUserReturnedCreated> => {
+  const userRepository = dataSource.getRepository(User);
+
+  const findUser = await userRepository.findOneBy({ id: userId });
+
+  if (!findUser) {
+    throw new AppError("User not found, try again with new information", 404);
+  }
+
+  const userResponse = userReturnedSchema.parse(findUser);
+
+  return userResponse;
+
 };
