@@ -46,7 +46,7 @@ export const userSignUp = userSchema.omit({
 });
 
 export const userReturnedSchema = userSchema.extend({
-  // incluir treinos
+  // incluir plano de treino
 }).omit({ password: true });
 
 export const usersGet = userReturnedSchema.array();

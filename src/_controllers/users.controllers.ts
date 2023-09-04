@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { TUserSignUp, TUserUpdate } from "../interfaces/user.interface";
 import {
   createUserService,
+  deleteUserService,
   retrieveUserService,
   retrieveUsersService,
   updateUserService,
@@ -23,6 +24,7 @@ export const retrieveUserController = async (
   const foundUser = await retrieveUserService(userId);
   return res.status(201).json(foundUser);
 };
+
 export const retrieveUsersController = async (
   req: Request,
   res: Response
@@ -30,12 +32,22 @@ export const retrieveUsersController = async (
   const foundUsers = await retrieveUsersService();
   return res.status(201).json(foundUsers);
 };
+
 export const updateUserController = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  const newData: TUserUpdate = req.body
+  const newData: TUserUpdate = req.body;
   const userId: string = req.params.id;
   const updatedUser = await updateUserService(userId, newData);
   return res.status(201).json(updatedUser);
+};
+
+export const deleteUserController = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const userId: string = req.params.id;
+  await deleteUserService(userId);
+  return res.status(204).json();
 };
