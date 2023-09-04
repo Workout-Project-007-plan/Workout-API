@@ -49,6 +49,6 @@ export const userReturnedSchema = userSchema.extend({
   // incluir treinos
 }).omit({ password: true });
 
-export const usersGet = userSchema.array();
+export const usersGet = userReturnedSchema.array();
 
 export const userUpdate = userSignUp.partial();
