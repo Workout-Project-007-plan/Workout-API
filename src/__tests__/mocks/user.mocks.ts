@@ -11,7 +11,7 @@ export const mockUserSignUpData: TUserSignUp = {
   email: "doe.john@mail.com",
   password: "123456",
   gender: "male",
-  height: 178,
+  height: 2,
   age: 28,
   weight: 70,
   weight_goal: 80,
