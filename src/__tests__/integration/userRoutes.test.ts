@@ -36,11 +36,11 @@ describe("/users", () => {
     expect(response.body).toHaveProperty("email");
     expect(response.body).not.toHaveProperty("password");
     expect(response.body).toHaveProperty("name");
-    expect(response.body).toHaveProperty("createdAt");
-    expect(response.body).toHaveProperty("is_adm");
+    expect(response.body).toHaveProperty("created_at");
+    expect(response.body).toHaveProperty("admin");
 
     expect(response.body.email).toEqual(mockUserSignUpData.email);
-    expect(response.body.is_adm).toEqual(false);
+    expect(response.body.admin).toEqual(false);
     expect(response.status).toBe(201);
   });
 
