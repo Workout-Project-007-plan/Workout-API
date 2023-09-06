@@ -1,10 +1,9 @@
 import { z } from "zod";
-import { trainsSerie } from "./train.schema";
 
 export const userSchema = z.object({
   id: z.string().uuid(),
-  email: z.string().email(),
-  password: z.string().min(6),
+  email: z.string().email("Invalid E-mail format"),
+  password: z.string().min(6, "Password need to be 6 characters").max(6),
   admin: z.boolean().default(() => false),
   is_active: z.boolean().default(() => true),
   name: z.string().min(3),
