@@ -1,4 +1,3 @@
-
 import {
   TUserAdmin,
   TUserLogin,
@@ -9,6 +8,7 @@ import {
 export const mockUserSignUpData: TUserSignUp = {
   name: "John Doe",
   email: "doe.john@mail.com",
+  is_adm: false,
   password: "123456",
   gender: "male",
   height: 2,
@@ -36,7 +36,7 @@ export const mockUserAdminSignUpData: TUserAdmin = {
   age: 28,
   weight: 70,
   weight_goal: 80,
-  admin: true,
+  is_adm: true,
 };
 
 export const mockUserLoginData: TUserLogin = {

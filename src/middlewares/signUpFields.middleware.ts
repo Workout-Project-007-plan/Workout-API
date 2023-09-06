@@ -26,12 +26,3 @@ export const signUpFieldsMiddleware = (
 
   return next()
 };
-
-// email: z.string().email("Invalid E-mail format"),
-// password: z.string().min(6, "Password need to be 6 characters").max(6),
-// name: z.string().min(3),
-// gender: z.string().min(3).max(10),
-// height: z.number().max(4),
-// age: z.number().max(120),
-// weight: z.number().max(250),
-// weight_goal: z.number().max(150),
