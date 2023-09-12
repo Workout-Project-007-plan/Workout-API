@@ -20,7 +20,7 @@ export const signUpFieldsMiddleware = (
   ) {
     throw new AppError(
       "You need to fulfill all the required fields to create an account",
-      403
+      400
     );
   }
 
