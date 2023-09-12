@@ -4,14 +4,14 @@ import { mockAdminLoginData, mockUserLoginData } from "./user.mocks";
 
 export const userToken = async () => {
   const userLoginResponse = await request(app)
-    .post("/login")
+    .post("/session")
     .send(mockUserLoginData);
-  return `Bearer ${userLoginResponse}`;
+  return `Bearer ${userLoginResponse.body.token}`;
 };
 
 export const adminToken = async () => {
   const adminLoginResponse = await request(app)
-    .post("/login")
+    .post("/session")
     .send(mockAdminLoginData);
-  return `Bearer ${adminLoginResponse}`;
+  return `Bearer ${adminLoginResponse.body.token}`;
 };
