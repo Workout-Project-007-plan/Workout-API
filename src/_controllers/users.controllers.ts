@@ -13,6 +13,7 @@ export const createUserController = async (
   res: Response
 ): Promise<Response> => {
   const userData: TUserSignUp = req.body;
+  console.log(userData)
   const newUser = await createUserService(userData);
   return res.status(201).json(newUser);
 };

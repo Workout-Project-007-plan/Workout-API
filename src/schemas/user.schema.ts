@@ -1,11 +1,10 @@
 import { z } from "zod";
-import { trainsSerie } from "./train.schema";
 
 export const userSchema = z.object({
   id: z.string().uuid(),
-  email: z.string().email(),
-  password: z.string().min(6),
-  admin: z.boolean().default(() => false),
+  email: z.string().email("Invalid E-mail format"),
+  password: z.string().min(6, "Password need to be 6 characters").max(6),
+  is_adm: z.boolean().default(false),
   is_active: z.boolean().default(() => true),
   name: z.string().min(3),
   gender: z.string().min(3).max(10),
@@ -34,9 +33,9 @@ export const userAdmin = userSchema.omit({
   password_reset_token: true,
   password_reseted_at: true,
 });
+
 export const userSignUp = userSchema.omit({
   id: true,
-  admin: true,
   created_at: true,
   updated_at: true,
   deleted_at: true,

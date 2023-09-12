@@ -43,7 +43,7 @@ export class User {
   @Column({ default: true })
   is_active: boolean;
 
-  @Column({ default: false })
+  @Column({nullable: true})
   is_adm: boolean;
 
   @CreateDateColumn({type:"date"})

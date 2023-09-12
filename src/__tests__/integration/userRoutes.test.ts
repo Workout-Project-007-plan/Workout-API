@@ -37,10 +37,10 @@ describe("/users", () => {
     expect(response.body).not.toHaveProperty("password");
     expect(response.body).toHaveProperty("name");
     expect(response.body).toHaveProperty("created_at");
-    expect(response.body).toHaveProperty("admin");
+    expect(response.body).toHaveProperty("is_adm");
 
     expect(response.body.email).toEqual(mockUserSignUpData.email);
-    expect(response.body.admin).toEqual(false);
+    expect(response.body.is_adm).toEqual(false);
     expect(response.status).toBe(201);
   });
 
@@ -141,7 +141,7 @@ describe("/users", () => {
     expect(response.body).not.toHaveProperty("password");
     expect(response.body).toHaveProperty("name");
     expect(response.body).toHaveProperty("is_active");
-    expect(response.body).toHaveProperty("isAdm");
+    expect(response.body).toHaveProperty("is_adm");
     expect(response.body).toHaveProperty("created_at");
     expect(response.body).toHaveProperty("updated_at");
     expect(response.status).toBe(200);
@@ -166,7 +166,7 @@ describe("/users", () => {
     expect(response.body).not.toHaveProperty("password");
     expect(response.body).toHaveProperty("name");
     expect(response.body).toHaveProperty("is_active");
-    expect(response.body).toHaveProperty("isAdm");
+    expect(response.body).toHaveProperty("is_adm");
     expect(response.body).toHaveProperty("created_at");
     expect(response.body).toHaveProperty("updated_at");
     expect(response.status).toBe(200);
