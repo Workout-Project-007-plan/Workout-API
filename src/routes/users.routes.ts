@@ -10,6 +10,7 @@ import { validFieldsMiddleware } from "../middlewares/validFields.middleware";
 import { userSignUp } from "../schemas";
 import { signUpFieldsMiddleware } from "../middlewares/signUpFields.middleware";
 import { updateDataMiddleware } from "../middlewares/updateData.middleware";
+import { ensureAuthMiddleware } from "../middlewares/ensureAuth.middleware";
 
 const userRouter: Router = Router();
 
@@ -19,7 +20,7 @@ userRouter.post(
   validFieldsMiddleware(userSignUp),
   createUserController
 );
-userRouter.get("", retrieveUsersController);
+userRouter.get("", ensureAuthMiddleware, retrieveUsersController);
 userRouter.get("/:id", retrieveUserController);
 userRouter.patch("/:id", updateDataMiddleware, updateUserController);
 userRouter.delete("/:id", deleteUserController);
