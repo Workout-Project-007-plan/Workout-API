@@ -5,10 +5,12 @@ import { json } from "body-parser";
 import cors from "cors";
 import { userRouter } from "./routes";
 import handleError from "./middlewares/handleErrors.middleware";
+import { sessionRouter } from "./routes/session.routes";
 
 export const app: Application = express();
 app.use(json());
 app.use(cors());
 app.use("/users", userRouter);
 
+app.use("/session", sessionRouter)
 app.use(handleError);
