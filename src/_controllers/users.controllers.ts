@@ -13,7 +13,6 @@ export const createUserController = async (
   res: Response
 ): Promise<Response> => {
   const userData: TUserSignUp = req.body;
-  console.log(userData)
   const newUser = await createUserService(userData);
   return res.status(201).json(newUser);
 };
@@ -23,7 +22,7 @@ export const retrieveUserController = async (
 ): Promise<Response> => {
   const userId: string = req.params.id;
   const foundUser = await retrieveUserService(userId);
-  return res.status(201).json(foundUser);
+  return res.status(200).json(foundUser);
 };
 
 export const retrieveUsersController = async (
@@ -31,7 +30,7 @@ export const retrieveUsersController = async (
   res: Response
 ): Promise<Response> => {
   const foundUsers = await retrieveUsersService();
-  return res.status(201).json(foundUsers);
+  return res.status(200).json(foundUsers);
 };
 
 export const updateUserController = async (
