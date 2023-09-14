@@ -129,31 +129,24 @@ describe("/users", () => {
     expect(response.status).toBe(200);
   });
 
-  // test("GET /users/:id - Should NOT be able to list an user by ID WITHOUT authorization.", async () => {
-  //   const users = await request(app)
-  //     .get("/users")
-  //     .set("Authorization", await adminToken());
-  //   const response = await request(app).get(`/users/${users.body.users[0].id}`);
+  test("GET /users/:id - Should NOT be able to list an user by ID WITHOUT authorization.", async () => {
+    const users = await request(app)
+      .get("/users")
+      .set("Authorization", await adminToken());
+    const response = await request(app).get(`/users/${users.body[0].id}`);
 
-  //   expect(response.body).toHaveProperty("id");
-  //   expect(response.body).toHaveProperty("email");
-  //   expect(response.body).not.toHaveProperty("password");
-  //   expect(response.body).toHaveProperty("name");
-  //   expect(response.body).toHaveProperty("is_active");
-  //   expect(response.body).toHaveProperty("is_adm");
-  //   expect(response.body).toHaveProperty("created_at");
-  //   expect(response.body).toHaveProperty("updated_at");
-  //   expect(response.status).toBe(200);
-  // });
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
+  });
 
-  // test("GET users/:id - Should NOT be able to list an user without a valid id.", async () => {
-  //   const response = await request(app)
-  //     .get(`/users/b855d86b-d4c9-41cd-ab98-d7fa734c6ce4`)
-  //     .set("Authorization", await adminToken());
+  test("GET users/:id - Should NOT be able to list an user without a valid id.", async () => {
+    const response = await request(app)
+      .get(`/users/b855d86b-d4c9-41cd-ab98-d7fa734c6ce4`)
+      .set("Authorization", await adminToken());
 
-  //   expect(response.body).toHaveProperty("message");
-  //   expect(response.status).toBe(404);
-  // });
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(404);
+  });
 
   // test("GET /users/profile - Should be able to list your own profile.", async () => {
   //   const response = await request(app)
@@ -177,7 +170,7 @@ describe("/users", () => {
   //     .set("Authorization", await adminToken());
 
   //   const response = await request(app).patch(
-  //     `/users/${userToUpdate.body.users[0].id}`
+  //     `/users/${userToUpdate.body[0].id}`
   //   );
 
   //   expect(response.body).toHaveProperty("message");
