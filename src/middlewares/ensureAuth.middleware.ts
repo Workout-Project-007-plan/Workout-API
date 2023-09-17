@@ -23,7 +23,6 @@ export const ensureAuthMiddleware = async (
       id: decoded.sub,
     };
 
-    console.log(req.user)
     return next();
   });
 };
