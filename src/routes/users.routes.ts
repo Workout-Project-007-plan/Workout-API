@@ -21,8 +21,8 @@ userRouter.post(
   createUserController
 );
 userRouter.get("", ensureAuthMiddleware, retrieveUsersController);
-userRouter.get("/:id", retrieveUserController);
-userRouter.patch("/:id", updateDataMiddleware, updateUserController);
-userRouter.delete("/:id", deleteUserController);
+userRouter.get("/:id", ensureAuthMiddleware, retrieveUserController);
+userRouter.patch("/:id", ensureAuthMiddleware, updateDataMiddleware, updateUserController);
+userRouter.delete("/:id", ensureAuthMiddleware, deleteUserController);
 
 export default userRouter;
