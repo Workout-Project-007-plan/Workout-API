@@ -5,6 +5,7 @@ import {
   mockUserAdminSignUpData,
   mockUserLoginData,
   mockUserSignUpData,
+  mockUserSignUpToUpdateData,
   mockUserUpdateData,
   mockWrongUserMailData,
   mockWrongUserSignUpData,
@@ -164,25 +165,25 @@ describe("/users", () => {
     expect(response.status).toBe(200);
   });
 
-  // test("PATCH /users - Should NOT be able to update without authentication.", async () => {
-  //   const userToUpdate = await request(app)
-  //     .get("/users")
-  //     .set("Authorization", await adminToken());
+  test("PATCH /users - Should NOT be able to update without authentication.", async () => {
+    const userToUpdate = await request(app)
+      .get("/users")
+      .set("Authorization", await adminToken());
 
-  //   const response = await request(app).patch(
-  //     `/users/${userToUpdate.body[0].id}`
-  //   );
+    const response = await request(app).patch(
+      `/users/${userToUpdate.body[0].id}`
+    );
 
-  //   expect(response.body).toHaveProperty("message");
-  //   expect(response.status).toBe(401);
-  // });
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
+  });
 
-  // test("PATCH /users - Should NOT be able to update with invalid id.", async () => {
+  // test("PATCH /users/:id - Should NOT be able to update with invalid id.", async () => {
   //   const newData = { name: "Test", email: "test@mail.com" };
 
   //   const response = await request(app)
   //     .patch(`/users/98198198-dsfsdfdhfgh-1961651`)
-  //     .set("Authorization", await userToken())
+  //     .set("Authorization", await adminToken())
   //     .send(newData);
 
   //   expect(response.body).toHaveProperty("message");
@@ -196,7 +197,7 @@ describe("/users", () => {
   //     .get("/users")
   //     .set("Authorization", await adminToken());
   //   const response = await request(app)
-  //     .patch(`/users/${userToUpdateRequest.body.users[0].id}`)
+  //     .patch(`/users/${userToUpdateRequest.body[0].id}`)
   //     .set("Authorization", await userToken())
   //     .send(newData);
 
@@ -212,7 +213,7 @@ describe("/users", () => {
   //     .set("Authorization", await adminToken());
 
   //   const response = await request(app)
-  //     .patch(`/users/${userToUpdate.body.users[0].id}`)
+  //     .patch(`/users/${userToUpdate.body[0].id}`)
   //     .set("Authorization", await adminToken())
   //     .send(newAdmValue);
 
@@ -223,7 +224,7 @@ describe("/users", () => {
   // test("PATCH /users - Should be able to update user.", async () => {
   //   const userToUpdate = await request(app)
   //     .post("/users")
-  //     .send(mockUserLoginData);
+  //     .send(mockUserSignUpToUpdateData);
 
   //   const updateResponse = await request(app)
   //     .patch(`/users/${userToUpdate.body.id}`)
@@ -247,7 +248,7 @@ describe("/users", () => {
   //     .get("/users")
   //     .set("Authorization", await adminToken());
   //   const response = await request(app)
-  //     .delete(`/users/${userToBeDeleted.body.users[0].id}`)
+  //     .delete(`/users/${userToBeDeleted.body[0].id}`)
   //     .set("Authorization", await userToken());
 
   //   expect(response.body).toHaveProperty("message");
