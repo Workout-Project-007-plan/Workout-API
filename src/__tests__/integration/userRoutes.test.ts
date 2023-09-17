@@ -148,21 +148,21 @@ describe("/users", () => {
     expect(response.status).toBe(404);
   });
 
-  // test("GET /users/profile - Should be able to list your own profile.", async () => {
-  //   const response = await request(app)
-  //     .get(`/users/profile`)
-  //     .set("Authorization", await adminToken());
+  test("GET /users/profile - Should be able to list your own profile.", async () => {
+    const response = await request(app)
+      .get(`/users/profile`)
+      .set("Authorization", await adminToken());
 
-  //   expect(response.body).toHaveProperty("id");
-  //   expect(response.body).toHaveProperty("email");
-  //   expect(response.body).not.toHaveProperty("password");
-  //   expect(response.body).toHaveProperty("name");
-  //   expect(response.body).toHaveProperty("is_active");
-  //   expect(response.body).toHaveProperty("is_adm");
-  //   expect(response.body).toHaveProperty("created_at");
-  //   expect(response.body).toHaveProperty("updated_at");
-  //   expect(response.status).toBe(200);
-  // });
+    expect(response.body).toHaveProperty("id");
+    expect(response.body).toHaveProperty("email");
+    expect(response.body).not.toHaveProperty("password");
+    expect(response.body).toHaveProperty("name");
+    expect(response.body).toHaveProperty("is_active");
+    expect(response.body).toHaveProperty("is_adm");
+    expect(response.body).toHaveProperty("created_at");
+    expect(response.body).toHaveProperty("updated_at");
+    expect(response.status).toBe(200);
+  });
 
   // test("PATCH /users - Should NOT be able to update without authentication.", async () => {
   //   const userToUpdate = await request(app)
