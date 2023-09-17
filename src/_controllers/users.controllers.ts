@@ -3,6 +3,7 @@ import { TUserSignUp, TUserUpdate } from "../interfaces/user.interface";
 import {
   createUserService,
   deleteUserService,
+  retrieveOwnProfileService,
   retrieveUserService,
   retrieveUsersService,
   updateUserService,
@@ -16,12 +17,22 @@ export const createUserController = async (
   const newUser = await createUserService(userData);
   return res.status(201).json(newUser);
 };
+
 export const retrieveUserController = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
   const userId: string = req.params.id;
   const foundUser = await retrieveUserService(userId);
+  return res.status(200).json(foundUser);
+};
+
+export const retrieveOwnProfileController = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const userId: string = req.user.id;
+  const foundUser = await retrieveOwnProfileService(userId);
   return res.status(200).json(foundUser);
 };
 

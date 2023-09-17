@@ -49,6 +49,22 @@ export const retrieveUserService = async (
   return userResponse;
 };
 
+export const retrieveOwnProfileService = async (
+  userId: string
+): Promise<TUserReturnedCreated> => {
+  const userRepository = dataSource.getRepository(User);
+
+  const findUser = await userRepository.findOneBy({ id: userId });
+
+  if (!findUser) {
+    throw new AppError("User not found, try again with new information", 404);
+  }
+
+  const userResponse = userReturnedSchema.parse(findUser);
+
+  return userResponse;
+};
+
 export const retrieveUsersService = async (): Promise<TGetUsers> => {
   const userRepository = dataSource.getRepository(User);
 
