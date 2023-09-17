@@ -19,10 +19,11 @@ export const ensureAuthMiddleware = async (
       res.status(401).json({ message: error.message });
     }
 
-    // req.user = {
-    //   id: decoded.sub,
-    // };
+    req.user = {
+      id: decoded.sub,
+    };
 
+    console.log(req.user)
     return next();
   });
 };
