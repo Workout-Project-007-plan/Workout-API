@@ -51,7 +51,7 @@ export const updateUserController = async (
   const newData: TUserUpdate = req.body;
   const userId: string = req.params.id;
   const updatedUser = await updateUserService(userId, newData);
-  return res.status(201).json(updatedUser);
+  return res.status(200).json(updatedUser);
 };
 
 export const deleteUserController = async (
