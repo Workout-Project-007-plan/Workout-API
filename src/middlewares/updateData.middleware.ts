@@ -13,6 +13,8 @@ export const updateDataMiddleware = (
     updateData.id !== undefined ||
     updateData.is_active !== undefined
   ) {
-    throw new AppError("You don't have permissions to update this Data", 403)
+    throw new AppError("You don't have permissions to update this Data", 403);
   }
+
+  return next();
 };
