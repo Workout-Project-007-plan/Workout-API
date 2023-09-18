@@ -68,16 +68,17 @@ export const retrieveOwnProfileService = async (
 export const retrieveUsersService = async (): Promise<TGetUsers> => {
   const userRepository = dataSource.getRepository(User);
 
-  const findUsers = await userRepository.find();
+  const findUsers = await userRepository.find({withDeleted: true});
 
   if (!findUsers) {
-    throw new AppError("User not found, try again with new information", 404);
+    throw new AppError("Users not found, try again with new information", 404);
   }
 
   const usersResponse = usersGet.parse(findUsers);
 
   return usersResponse;
 };
+
 export const updateUserService = async (
   userId: string,
   newData: TUserUpdate
