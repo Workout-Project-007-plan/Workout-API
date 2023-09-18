@@ -6,6 +6,7 @@ import {
   mockUserLoginData,
   mockUserSignUpData,
   mockUserSignUpToUpdateData,
+  mockUserToBeDeletedSignUpData,
   mockUserUpdateData,
   mockWrongUserMailData,
   mockWrongUserSignUpData,
@@ -165,7 +166,7 @@ describe("/users", () => {
     expect(response.status).toBe(200);
   });
 
-  test("PATCH /users - Should NOT be able to update without authentication.", async () => {
+  test("PATCH /users/:id - Should NOT be able to update without authentication.", async () => {
     const userToUpdate = await request(app)
       .get("/users")
       .set("Authorization", await adminToken());
@@ -178,118 +179,125 @@ describe("/users", () => {
     expect(response.status).toBe(401);
   });
 
-  // test("PATCH /users/:id - Should NOT be able to update with invalid id.", async () => {
-  //   const newData = { name: "Test", email: "test@mail.com" };
+  test("PATCH /users/:id - Should NOT be able to update with an invalid id.", async () => {
+    const newData = { name: "Test", email: "test@mail.com" };
+    const invalidId = "98198198-dsfsdfdhfgh-1961651";
 
-  //   const response = await request(app)
-  //     .patch(`/users/98198198-dsfsdfdhfgh-1961651`)
-  //     .set("Authorization", await adminToken())
-  //     .send(newData);
+    const response = await request(app)
+      .patch(`/users/${invalidId}`)
+      .set("Authorization", await adminToken())
+      .send(newData);
 
-  //   expect(response.body).toHaveProperty("message");
-  //   expect(response.status).toBe(400);
-  // });
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(404);
+  });
 
-  // test("PATCH /users - Should NOT be able to update another user without admin permission.", async () => {
-  //   const newData = { name: "Test", email: "test@mail.com" };
+  test("PATCH /users - Should NOT be able to update another user without admin permission.", async () => {
+    const newData = { name: "Test", email: "test@mail.com" };
 
-  //   const userToUpdateRequest = await request(app)
-  //     .get("/users")
-  //     .set("Authorization", await adminToken());
-  //   const response = await request(app)
-  //     .patch(`/users/${userToUpdateRequest.body[0].id}`)
-  //     .set("Authorization", await userToken())
-  //     .send(newData);
+    const userToUpdateRequest = await request(app)
+      .get("/users")
+      .set("Authorization", await adminToken());
+    const response = await request(app)
+      .patch(`/users/${userToUpdateRequest.body[0].id}`)
+      .set("Authorization", await userToken())
+      .send(newData);
 
-  //   expect(response.body).toHaveProperty("message");
-  //   expect(response.status).toBe(401);
-  // });
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
+  });
 
-  // test("PATCH /users - Should NOT be able to update Adm credential.", async () => {
-  //   const newAdmValue = { isAdm: true };
+  test("PATCH /users - Should NOT be able to update Adm credential.", async () => {
+    const newAdmValue = { is_adm: true };
 
-  //   const userToUpdate = await request(app)
-  //     .get("/users")
-  //     .set("Authorization", await adminToken());
+    const userToUpdate = await request(app)
+      .get("/users")
+      .set("Authorization", await adminToken());
 
-  //   const response = await request(app)
-  //     .patch(`/users/${userToUpdate.body[0].id}`)
-  //     .set("Authorization", await adminToken())
-  //     .send(newAdmValue);
+    const response = await request(app)
+      .patch(`/users/${userToUpdate.body[0].id}`)
+      .set("Authorization", await adminToken())
+      .send(newAdmValue);
 
-  //   expect(response.body).toHaveProperty("message");
-  //   expect(response.status).toBe(401);
-  // });
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(403);
+  });
 
-  // test("PATCH /users - Should be able to update user.", async () => {
-  //   const userToUpdate = await request(app)
-  //     .post("/users")
-  //     .send(mockUserSignUpToUpdateData);
+  test("PATCH /users - Should be able to update user.", async () => {
+    const userToUpdate = await request(app)
+      .post("/users")
+      .send(mockUserSignUpToUpdateData);
 
-  //   const updateResponse = await request(app)
-  //     .patch(`/users/${userToUpdate.body.id}`)
-  //     .set("Authorization", await userToken())
-  //     .send(mockUserUpdateData);
+    const updateResponse = await request(app)
+      .patch(`/users/${userToUpdate.body.id}`)
+      .set("Authorization", await adminToken())
+      .send(mockUserUpdateData);
 
-  //   expect(updateResponse.body.email).toEqual(mockUserUpdateData.email);
-  //   expect(updateResponse.body.name).toEqual(mockUserUpdateData.name);
-  //   expect(updateResponse.body.height).toEqual(mockUserUpdateData.height);
-  //   expect(updateResponse.body.age).toEqual(mockUserUpdateData.age);
-  //   expect(updateResponse.body.weight).toEqual(mockUserUpdateData.weight);
-  //   expect(updateResponse.body.weight_goal).toEqual(
-  //     mockUserUpdateData.weight_goal
-  //   );
-  //   expect(updateResponse.status).toBe(200);
-  //   expect(updateResponse.body).toHaveProperty("message");
-  // });
+    // console.log(updateResponse.body);
 
-  // test("DELETE /users/:id - Should NOT be able to inactive someone else account without admin permissions.", async () => {
-  //   const userToBeDeleted = await request(app)
-  //     .get("/users")
-  //     .set("Authorization", await adminToken());
-  //   const response = await request(app)
-  //     .delete(`/users/${userToBeDeleted.body[0].id}`)
-  //     .set("Authorization", await userToken());
+    expect(updateResponse.body.email).toEqual(mockUserUpdateData.email);
+    expect(updateResponse.body.name).toEqual(mockUserUpdateData.name);
+    expect(updateResponse.body.height).toEqual(mockUserUpdateData.height);
+    expect(updateResponse.body.age).toEqual(mockUserUpdateData.age);
+    expect(updateResponse.body.weight).toEqual(mockUserUpdateData.weight);
+    expect(updateResponse.body.weight_goal).toEqual(
+      mockUserUpdateData.weight_goal
+    );
+    expect(updateResponse.status).toBe(200);
+  });
 
-  //   expect(response.body).toHaveProperty("message");
-  //   expect(response.status).toBe(401);
-  // });
+  test("DELETE /users/:id - Should NOT be able to inactive someone else account without admin permissions.", async () => {
+    const userToBeDeleted = await request(app)
+      .get("/users")
+      .set("Authorization", await adminToken());
+    const response = await request(app)
+      .delete(`/users/${userToBeDeleted.body[0].id}`)
+      .set("Authorization", await userToken());
 
-  // test("DELETE /users/:id - Should NOT be able to inactive an account without a valid ID.", async () => {
-  //   const response = await request(app)
-  //     .delete("/users/165981909")
-  //     .set("Authorization", await adminToken());
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
+  });
 
-  //   expect(response.body).toHaveProperty("message");
-  //   expect(response.status).toBe(401);
-  // });
+  test("DELETE /users/:id - Should NOT be able to inactive an account without a valid ID.", async () => {
+    const response = await request(app)
+      .delete("/users/165981909")
+      .set("Authorization", await adminToken());
 
-  // test("DELETE /users/profile - Should be able to inactive your own account.", async () => {
-  //   const userToBeDeleted = await request(app)
-  //     .get(`/users/profile`)
-  //     .set("Authorization", await userToken());
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(404);
+  });
 
-  //   const response = await request(app)
-  //     .delete(`/users/${userToBeDeleted.body.id}`)
-  //     .set("Authorization", await userToken());
+  test("DELETE /users/:id - Should be able to inactive your own account or with admin permission.", async () => {
+    await request(app).post("/users").send(mockUserToBeDeletedSignUpData);
+    const retrieveResponse = await request(app)
+      .get(`/users`)
+      .set("Authorization", await adminToken());
 
-  //   expect(response.status).toBe(204);
-  // });
+    const response = await request(app)
+      .delete(`/users/${retrieveResponse.body[3].id}`)
+      .set("Authorization", await adminToken());
 
-  // test("DELETE /users/profile - Should NOT be able to inactive an account that already have been inactivated.", async () => {
-  //   const userToBeDeleted = await request(app)
-  //     .get(`/users/profile`)
-  //     .set("Authorization", await userToken());
+    expect(response.status).toBe(204);
 
-  //   const response = await request(app)
-  //     .delete(`/users/${userToBeDeleted.body.id}`)
-  //     .set("Authorization", await userToken());
+    const retrieveResponseAfter = await request(app)
+    .get(`/users`)
+    .set("Authorization", await adminToken());
+    // console.log(retrieveResponseAfter.body);
+  });
 
-  //   expect(response.body).toHaveProperty("message");
-  //   expect(response.status).toBe(401);
-  // });
+  test("DELETE /users/profile - Should NOT be able to inactive an account that already have been inactivated.", async () => {
+    const userToBeDeleted = await request(app)
+      .get(`/users`)
+      .set("Authorization", await adminToken());
+    const response = await request(app)
+      .delete(`/users/${userToBeDeleted.body[3].id}`)
+      .set("Authorization", await adminToken());
 
-  // test("PATCH /users/:id - Should be able to reactive your own account.", async () => {
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(404);
+  });
+
+  // test("PATCH /users/:id/reactive - Should be able to reactive your own account.", async () => {
   //   const userToReactive = await request(app)
   //     .patch(`/users/:id`)
   //     .set("Authorization", await userToken());
@@ -302,7 +310,7 @@ describe("/users", () => {
   //   expect(response.status).toBe(201);
   // });
 
-  // test("PATCH /users/:id - Should NOT be able to reactive an account already activated.", async () => {
+  // test("PATCH /users/:id/reactive - Should NOT be able to reactive an account already activated.", async () => {
   //   const userToReactive = await request(app)
   //     .patch(`/users/:id`)
   //     .set("Authorization", await userToken());

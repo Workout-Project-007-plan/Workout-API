@@ -16,6 +16,19 @@ export const mockUserSignUpData: TUserSignUp = {
   weight: 70,
   weight_goal: 80,
 };
+
+export const mockUserToBeDeletedSignUpData: TUserSignUp = {
+  name: "John Deleted",
+  email: "doe.john.tobedeleted@mail.com",
+  is_adm: false,
+  password: "123456",
+  gender: "male",
+  height: 2,
+  age: 28,
+  weight: 70,
+  weight_goal: 80,
+};
+
 export const mockUserSignUpToUpdateData: TUserSignUp = {
   name: "John Doe",
   email: "doe.john1@mail.com",
