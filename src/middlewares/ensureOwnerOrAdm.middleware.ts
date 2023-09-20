@@ -12,7 +12,6 @@ export const ensureOwnerOrAdmMiddleware = async (
   const userRepository = dataSource.getRepository(User);
 
   const foundUser = await userRepository.findOneBy({ id: loggedUser });
-
   if (!foundUser.is_adm) {
     if (loggedUser !== req.params.id) {
       throw new AppError(
@@ -22,11 +21,5 @@ export const ensureOwnerOrAdmMiddleware = async (
     }
   }
 
-  //   if (loggedUser !== req.params.id) {
-  //     throw new AppError(
-  //       "You don't have permissions to perform this action",
-  //       401
-  //     );
-  //   }
   return next();
 };
