@@ -233,8 +233,6 @@ describe("/users", () => {
       .set("Authorization", await adminToken())
       .send(mockUserUpdateData);
 
-    // console.log(updateResponse.body);
-
     expect(updateResponse.body.email).toEqual(mockUserUpdateData.email);
     expect(updateResponse.body.name).toEqual(mockUserUpdateData.name);
     expect(updateResponse.body.height).toEqual(mockUserUpdateData.height);
@@ -279,16 +277,16 @@ describe("/users", () => {
 
     expect(response.status).toBe(204);
 
-    const retrieveResponseAfter = await request(app)
-    .get(`/users`)
-    .set("Authorization", await adminToken());
-    // console.log(retrieveResponseAfter.body);
+    await request(app)
+      .get(`/users`)
+      .set("Authorization", await adminToken());
   });
 
   test("DELETE /users/profile - Should NOT be able to inactive an account that already have been inactivated.", async () => {
     const userToBeDeleted = await request(app)
       .get(`/users`)
       .set("Authorization", await adminToken());
+
     const response = await request(app)
       .delete(`/users/${userToBeDeleted.body[3].id}`)
       .set("Authorization", await adminToken());
@@ -297,29 +295,27 @@ describe("/users", () => {
     expect(response.status).toBe(404);
   });
 
-  // test("PATCH /users/:id/reactive - Should be able to reactive your own account.", async () => {
-  //   const userToReactive = await request(app)
-  //     .patch(`/users/:id`)
-  //     .set("Authorization", await userToken());
+  test("PATCH /session/reactive - Should be able to reactive your own account.", async () => {
+    const userToReactive = await request(app)
+      .get(`/users`)
+      .set("Authorization", await userToken());
 
-  //   const response = await request(app)
-  //     .delete(`/users/${userToReactive.body.id}/reactivation`)
-  //     .set("Authorization", await userToken());
+    const response = await request(app)
+      .patch(`/session/reactive`)
+      .send({ email: userToReactive.body[3].email });
+    expect(response.status).toBe(200);
+  });
 
-  //   expect(response.body).toHaveProperty("message");
-  //   expect(response.status).toBe(201);
-  // });
+  test("PATCH /session/reactive - Should NOT be able to reactive an account already reactivated.", async () => {
+    const userToReactive = await request(app)
+      .get(`/users`)
+      .set("Authorization", await adminToken());
 
-  // test("PATCH /users/:id/reactive - Should NOT be able to reactive an account already activated.", async () => {
-  //   const userToReactive = await request(app)
-  //     .patch(`/users/:id`)
-  //     .set("Authorization", await userToken());
+    const response = await request(app)
+      .patch(`/session/reactive`)
+      .send({ email: userToReactive.body[3].email });
 
-  //   const response = await request(app)
-  //     .delete(`/users/${userToReactive.body.id}/reactivation`)
-  //     .set("Authorization", await userToken());
-
-  //   expect(response.body).toHaveProperty("message");
-  //   expect(response.status).toBe(401);
-  // });
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
+  });
 });
