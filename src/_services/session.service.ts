@@ -4,6 +4,7 @@ import AppError from "../errors";
 import { TUserLogin } from "../interfaces/user.interface";
 import jwt from "jsonwebtoken";
 import { compare } from "bcryptjs";
+
 export const createSessionService = async ({
   email,
   password,
@@ -39,4 +40,26 @@ export const createSessionService = async ({
     }
   );
   return token;
+};
+
+export const reactiveAccountService = async (email: string): Promise<void> => {
+  const userRepository = dataSource.getRepository(User);
+  const userToReactive = await userRepository
+    .createQueryBuilder("user")
+    .where("user.email = :email", { email: email })
+    .withDeleted()
+    .getOne();
+
+  if (!userToReactive) {
+    throw new AppError("User not found, try again with new information", 404);
+  }
+
+  if (userToReactive.is_active) {
+    throw new AppError("This user is already reactivated", 401);
+  }
+
+  userToReactive.is_active = true;
+  userToReactive.deleted_at = null;
+
+  await userRepository.save(userToReactive);
 };
