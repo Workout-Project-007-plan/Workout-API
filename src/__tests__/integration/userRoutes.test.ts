@@ -71,30 +71,32 @@ describe("/users", () => {
     expect(response.status).toBe(400);
   });
 
-  // test("POST /users/forgotpassword - Should be able to send an e-mail to recover the password.", async () => {
-  //   const response = await request(app)
-  //     .post("/users/forgotpassword")
-  //     .send(mockUserSignUpData.email);
+  test("POST /recover - Should be able to send an e-mail with a token to recover the password.", async () => {
+    const response = await request(app)
+      .post("/recover")
+      .send({ email: mockUserSignUpData.email });
 
-  //   expect(response.body).toHaveProperty("message");
-  //   expect(response.status).toBe(200);
-  // });
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(200);
+  }, 50000);
 
-  // test("POST /users/forgotpassword - Should NOT be able to send the recovery password e-mail with an invalid e-mail.", async () => {
-  //   const response = await request(app).post("/users/forgotpassword");
+  test("POST /recover - Should NOT be able to send the recovery password e-mail with an invalid e-mail.", async () => {
+    const response = await request(app)
+      .post("/recover")
+      .send({ email: "invalid.mail.com" });
 
-  //   expect(response.body).toHaveProperty("message");
-  //   expect(response.status).toBe(400);
-  // });
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(400);
+  });
 
-  // test("POST /users/forgotpassword - Should NOT be able to send a password recovery email to unregistered users.", async () => {
-  //   const response = await request(app)
-  //     .post("/users/forgotpassword")
-  //     .send("schuhmacher.mail.com");
+  test("POST /recover - Should NOT be able to send a password recovery email to unregistered users.", async () => {
+    const response = await request(app)
+      .post("/recover")
+      .send({ email: "schuhmacher@mail.com" });
 
-  //   expect(response.body).toHaveProperty("message");
-  //   expect(response.status).toBe(404);
-  // });
+    expect(response.body.message).toContain("...");
+    expect(response.status).toBe(200);
+  });
 
   test("GET /users - Should be able to list users.", async () => {
     const response = await request(app)
