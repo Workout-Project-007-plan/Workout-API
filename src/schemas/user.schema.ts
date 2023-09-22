@@ -24,6 +24,8 @@ export const userLogin = z.object({
   password: z.string().min(6),
 });
 
+export const recoverPass = userLogin.omit({ password: true });
+
 export const userAdmin = userSchema.omit({
   id: true,
   created_at: true,
@@ -44,9 +46,11 @@ export const userSignUp = userSchema.omit({
   password_reseted_at: true,
 });
 
-export const userReturnedSchema = userSchema.extend({
-  // incluir plano de treino
-}).omit({ password: true });
+export const userReturnedSchema = userSchema
+  .extend({
+    // incluir plano de treino
+  })
+  .omit({ password: true });
 
 export const usersGet = userReturnedSchema.array();
 
