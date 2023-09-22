@@ -94,9 +94,7 @@ describe("/login", () => {
       .set("Authorization", await adminToken())
       .send(mockUserUpdateData);
 
-    const response = await request(app)
-    .post("/session")
-    .send({
+    const response = await request(app).post("/session").send({
       email: mockUserUpdateData.email,
       password: mockUserUpdateData.password,
     });
@@ -104,4 +102,21 @@ describe("/login", () => {
     expect(response.body).toHaveProperty("token");
     expect(response.statusCode).toBe(200);
   });
+
+  test("POST /session/pincode - Should be able to get a token with a valid pincode sent by e-mail.", async () => {
+    await request(app)
+      .post("/recover")
+      .send({ email: mockUserSignUpData.email });
+
+    const token = await request(app)
+      .get("/users")
+      .set("Authorization", await adminToken());
+
+    const response = await request(app).post("/session/pincode").send({
+      recover_pin: token.body[1].password_reset_token
+    });
+
+    expect(response.body).toHaveProperty("token");
+    expect(response.statusCode).toBe(200);
+  }, 50000);
 });
