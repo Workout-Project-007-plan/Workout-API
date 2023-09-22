@@ -2,8 +2,10 @@ import request from "supertest";
 import { app } from "../../../src/app";
 import { DataSource } from "typeorm";
 import {
+  mockAdminLoginData,
   mockUserAdminSignUpData,
   mockUserLoginData,
+  mockUserSignUpData,
   mockWrongUserMailData,
 } from "../mocks/user.mocks";
 import AppDataSource from "../../../src/data-source";
@@ -21,45 +23,47 @@ describe("/login", () => {
         console.error(`Error during Data Source initialization, ${err}`);
       });
     await request(app).post("/users").send(mockUserAdminSignUpData);
+    await request(app).post("/users").send(mockUserSignUpData);
   });
   afterAll(async () => {
     await connection.destroy();
   });
 
-  test("POST /login - Should be able to login.", async () => {
-    const response = await request(app).post("/login").send(mockUserLoginData);
+  test("POST /session - Should be able to login.", async () => {
+    const response = await request(app)
+      .post("/session")
+      .send(mockUserLoginData);
     expect(response.body).toHaveProperty("token");
     expect(response.statusCode).toBe(200);
   });
 
-  test("POST /login - Should NOT be able to login with email or password invalid.", async () => {
+  test("POST /session - Should NOT be able to login with email or password invalid.", async () => {
     const response = await request(app)
-      .post("/login")
+      .post("/session")
       .send(mockWrongUserMailData);
     expect(response.body).not.toHaveProperty("token");
     expect(response.statusCode).toBe(401);
   });
 
-  test("POST /login - Should NOT be able to login if one or more field is empty or wrong.", async () => {
+  test("POST /session - Should NOT be able to login if one or more field is empty or wrong.", async () => {
     const response = await request(app)
-      .post("/login")
+      .post("/session")
       .send({ email: "", password: "" });
 
     expect(response.body).not.toHaveProperty("token");
-    expect(response.statusCode).toBe(400);
+    expect(response.statusCode).toBe(401);
   });
 
-  test("POST /login - Should NOT be able to login with isActive = false.", async () => {
+  test("POST /session - Should NOT be able to login with isActive = false.", async () => {
     const userToDeleteResponse = await request(app)
-      .post("/users")
-      .send(mockUserAdminSignUpData);
-
+      .get("/users")
+      .set("Authorization", await adminToken());
     await request(app)
       .delete(`/users/${userToDeleteResponse.body[0].id}`)
       .set("Authorization", await adminToken());
     const response = await request(app)
-      .post("/login")
-      .send(mockUserAdminSignUpData);
+      .post("/session")
+      .send(mockAdminLoginData);
 
     expect(response.body).not.toHaveProperty("token");
     expect(response.body).toHaveProperty("message");
