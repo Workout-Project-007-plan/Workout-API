@@ -1,7 +1,6 @@
 import { Router } from "express";
-import { sendMailController } from "../_controllers/sendMail.controller";
+import { sendMailController } from "../_controllers/passwordRecoverControllers/sendMail.controller";
 
+export const mailRouter = Router();
 
-export const mailRouter = Router()
-
-mailRouter.post("", sendMailController)
+mailRouter.post("", sendMailController);
