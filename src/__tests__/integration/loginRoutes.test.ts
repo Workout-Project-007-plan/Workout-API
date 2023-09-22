@@ -6,6 +6,8 @@ import {
   mockUserAdminSignUpData,
   mockUserLoginData,
   mockUserSignUpData,
+  mockUserSignUpToUpdateData,
+  mockUserUpdateData,
   mockWrongUserMailData,
 } from "../mocks/user.mocks";
 import AppDataSource from "../../../src/data-source";
@@ -59,14 +61,47 @@ describe("/login", () => {
       .get("/users")
       .set("Authorization", await adminToken());
     await request(app)
-      .delete(`/users/${userToDeleteResponse.body[0].id}`)
+      .delete(`/users/${userToDeleteResponse.body[1].id}`)
       .set("Authorization", await adminToken());
     const response = await request(app)
       .post("/session")
-      .send(mockAdminLoginData);
+      .send(mockUserLoginData);
 
     expect(response.body).not.toHaveProperty("token");
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(401);
+  });
+
+  test("POST /session - Should be able to login with a reactivated account.", async () => {
+    await request(app)
+      .patch(`/session/reactive`)
+      .send({ email: mockUserLoginData.email });
+    const response = await request(app)
+      .post("/session")
+      .send(mockUserLoginData);
+
+    expect(response.body).toHaveProperty("token");
+    expect(response.statusCode).toBe(200);
+  });
+
+  test("POST /session - Should be able to login with updated password and e-mail account.", async () => {
+    const userToUpdate = await request(app)
+      .post("/users")
+      .send(mockUserSignUpToUpdateData);
+
+    await request(app)
+      .patch(`/users/${userToUpdate.body.id}`)
+      .set("Authorization", await adminToken())
+      .send(mockUserUpdateData);
+
+    const response = await request(app)
+    .post("/session")
+    .send({
+      email: mockUserUpdateData.email,
+      password: mockUserUpdateData.password,
+    });
+
+    expect(response.body).toHaveProperty("token");
+    expect(response.statusCode).toBe(200);
   });
 });
