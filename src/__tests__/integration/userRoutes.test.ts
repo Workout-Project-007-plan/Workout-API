@@ -3,7 +3,6 @@ import { app } from "../../../src/app";
 import { DataSource } from "typeorm";
 import {
   mockUserAdminSignUpData,
-  mockUserLoginData,
   mockUserSignUpData,
   mockUserSignUpToUpdateData,
   mockUserToBeDeletedSignUpData,
